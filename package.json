@@ -1,0 +1,30 @@
+{
+  "name": "fulcrum-record-weather",
+  "version": "0.0.0",
+  "description": "A sample express app showing how to update a Fulcrum record with weather information based on its location and creation date.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JasonSanford/fulcrum-record-weather.git"
+  },
+  "keywords": [
+    "fulcrum",
+    "webhook",
+    "record"
+  ],
+  "author": "Jason Sanford",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JasonSanford/fulcrum-record-weather/issues"
+  },
+  "homepage": "https://github.com/JasonSanford/fulcrum-record-weather",
+  "dependencies": {
+    "connect-fulcrum-webhook": "^1.0.0",
+    "express": "^4.13.3",
+    "forecast.io": "0.0.9",
+    "fulcrum-app": "^1.1.0"
+  }
+}

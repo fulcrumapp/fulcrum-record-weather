@@ -53,7 +53,7 @@ function payloadProcessor (payload, done) {
       }
     });
 
-    console.log('Updated record: ', fulcrumRecord);
+    console.log('Attempt to update: ', fulcrumRecord);
 
     fulcrum.records.update(fulcrumRecord.record.id, fulcrumRecord, function (error, updatedRecord) {
       if (error) {

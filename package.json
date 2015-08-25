@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/JasonSanford/fulcrum-record-weather.git"
+    "url": "https://github.com/fulcrumapp/fulcrum-record-weather.git"
   },
   "keywords": [
     "fulcrum",
@@ -19,9 +19,9 @@
   "author": "Jason Sanford",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/JasonSanford/fulcrum-record-weather/issues"
+    "url": "https://github.com/fulcrumapp/fulcrum-record-weather/issues"
   },
-  "homepage": "https://github.com/JasonSanford/fulcrum-record-weather",
+  "homepage": "https://github.com/fulcrumapp/fulcrum-record-weather",
   "dependencies": {
     "connect-fulcrum-webhook": "^1.0.0",
     "express": "^4.13.3",

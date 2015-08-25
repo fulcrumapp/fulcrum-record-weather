@@ -4,7 +4,8 @@
   "description": "A sample express app showing how to update a Fulcrum record with weather information based on its location and creation date.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",

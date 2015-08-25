@@ -54,6 +54,7 @@ function payloadProcessor (payload, done) {
     });
 
     console.log('Attempt to update: ', fulcrumRecord);
+    console.log('fulcrumRecord.record.id: ', fulcrumRecord.record.id);
 
     fulcrum.records.update(fulcrumRecord.record.id, fulcrumRecord, function (error, updatedRecord) {
       if (error) {

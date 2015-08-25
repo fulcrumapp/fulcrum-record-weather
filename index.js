@@ -1,4 +1,5 @@
 var express = require('express');
+var Fulcrum = require('fulcrum-app');
 var fulcrumMiddleware = require('connect-fulcrum-webhook');
 var Forecast = require('forecast.io');
 
@@ -71,6 +72,7 @@ var fulcrumConfig = {
 
 app.use('/fulcrum', fulcrumMiddleware(fulcrumConfig));
 
-app.listen(5000, function () {
-  console.log('Listening on port 5000');
+var port = (process.env.PORT || 5000);
+app.listen(port, function () {
+  console.log('Listening on port ' + port);
 });

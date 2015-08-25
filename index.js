@@ -49,7 +49,7 @@ function payloadProcessor (payload, done) {
 
     Object.keys(fulcrumWeatherFieldKeys).forEach(function (metric) {
       if (currentWeather[metric]) {
-        fulcrumRecord.record.form_values[fulcrumWeatherFieldKeys[metric]] = currentWeather[metric];
+        fulcrumRecord.record.form_values[fulcrumWeatherFieldKeys[metric]] = currentWeather[metric].toString();
       }
     });
 

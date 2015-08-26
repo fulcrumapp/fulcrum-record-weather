@@ -5,7 +5,7 @@ var Forecast = require('forecast.io');
 
 var app = express();
 
-var formId = 'c407958e-997d-460d-a8d0-d2aa4187a2a2';
+var formId = '3f45825d-f123-46d0-927c-925db4a63618';
 var forecastApiKey = process.env.FORECAST_API_KEY;
 var fulcrumApiKey = process.env.FULCRUM_API_KEY;
 
@@ -13,10 +13,10 @@ var forecast = new Forecast({ APIKey: forecastApiKey });
 var fulcrum = new Fulcrum({ api_key: fulcrumApiKey });
 
 var fulcrumWeatherFieldKeys = {
-  summary: '6403',
-  temperature: 'ebf9',
-  humidity: 'cd65',
-  pressure: '654f'
+  summary: 'b860',
+  temperature: '45bf',
+  humidity: 'ca28',
+  pressure: '947d'
 };
 
 function payloadProcessor (payload, done) {
@@ -30,7 +30,7 @@ function payloadProcessor (payload, done) {
   var date            = new Date(clientCreatedAt);
   var unixTimestamp   = date.getTime() / 1000;
   var exclude         = 'minutely,hourly,daily,alerts,flags';
-  var forecastOptions = { exclude: exclude };
+  var forecastOptions = { exclude: exclude, units: 'si' };
 
   if (!(latitude && longitude)) {
     console.log('Skipping record because latitude and/or longitude is missing. Latitude: ' + latitude + '. Longitude: ' + longitude + '.');

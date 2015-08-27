@@ -1,5 +1,6 @@
 var express = require('express');
 var Fulcrum = require('fulcrum-app');
+var models = require('fulcrum-models');
 var fulcrumMiddleware = require('connect-fulcrum-webhook');
 var Forecast = require('forecast.io');
 
@@ -12,12 +13,29 @@ var fulcrumApiKey = process.env.FULCRUM_API_KEY;
 var forecast = new Forecast({ APIKey: forecastApiKey });
 var fulcrum = new Fulcrum({ api_key: fulcrumApiKey });
 
-var fulcrumWeatherFieldKeys = {
-  summary: 'b860',
-  temperature: '45bf',
-  humidity: 'ca28',
-  pressure: '947d'
-};
+var fulcrumWeatherFields = {
+  summary: { dataName: 'wx_summary' },
+  temperature: { dataName: 'wx_air_temperature' },
+  humidity: { dataName: 'wx_relative_humidity' },
+  pressure: { dataName: 'wx_barometric_pressure' }
+}
+
+fulcrum.forms.find(formId, function (error, response) {
+  if (error) {
+    return console.log('Error fetching form: ', error);
+  }
+  var form = new models.Form(response.form);
+
+  Object.keys(fulcrumWeatherFields).forEach(function (metricKey) {
+    var dataName = fulcrumWeatherFields[metricKey];
+    var key = form.keyForDataName(dataName);
+    fulcrumWeatherFields[metricKey].key = key;
+  });
+});
+
+function getWeatherFormKeys () {
+
+}
 
 function payloadProcessor (payload, done) {
   if (payload.data.form_id !== formId) {
@@ -47,9 +65,9 @@ function payloadProcessor (payload, done) {
       record: payload.data
     };
 
-    Object.keys(fulcrumWeatherFieldKeys).forEach(function (metric) {
+    Object.keys(fulcrumWeatherFields).forEach(function (metric) {
       if (currentWeather[metric]) {
-        fulcrumRecord.record.form_values[fulcrumWeatherFieldKeys[metric]] = currentWeather[metric].toString();
+        fulcrumRecord.record.form_values[fulcrumWeatherFieldKeys[metric].key] = currentWeather[metric].toString();
       }
     });
 

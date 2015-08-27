@@ -6,6 +6,7 @@ var Forecast = require('forecast.io');
 
 var app = express();
 
+var form;
 var formId = '3f45825d-f123-46d0-927c-925db4a63618';
 var forecastApiKey = process.env.FORECAST_API_KEY;
 var fulcrumApiKey = process.env.FULCRUM_API_KEY;
@@ -14,23 +15,18 @@ var forecast = new Forecast({ APIKey: forecastApiKey });
 var fulcrum = new Fulcrum({ api_key: fulcrumApiKey });
 
 var fulcrumWeatherFields = {
-  summary: { dataName: 'wx_summary' },
-  temperature: { dataName: 'wx_air_temperature' },
-  humidity: { dataName: 'wx_relative_humidity' },
-  pressure: { dataName: 'wx_barometric_pressure' }
+  summary: 'wx_summary',
+  temperature: 'wx_air_temperature',
+  humidity: 'wx_relative_humidity',
+  pressure: 'wx_barometric_pressure'
 }
 
 fulcrum.forms.find(formId, function (error, response) {
   if (error) {
     return console.log('Error fetching form: ', error);
   }
-  var form = new models.Form(response.form);
 
-  Object.keys(fulcrumWeatherFields).forEach(function (metricKey) {
-    var dataName = fulcrumWeatherFields[metricKey].dataName;
-    var key = form.keyForDataName(dataName);
-    fulcrumWeatherFields[metricKey].key = key;
-  });
+  form = new models.Form(response.form);
 });
 
 function payloadProcessor (payload, done) {
@@ -38,9 +34,12 @@ function payloadProcessor (payload, done) {
     return done();
   }
 
-  var latitude        = payload.data.latitude;
-  var longitude       = payload.data.longitude;
-  var clientCreatedAt = payload.data.client_created_at;
+  var record = new models.Record(payload.data);
+  record.setForm(form);
+
+  var latitude        = record.get('latitude');
+  var longitude       = record.get('longitude');
+  var clientCreatedAt = record.get('client_created_at');
   var date            = new Date(clientCreatedAt);
   var unixTimestamp   = date.getTime() / 1000;
   var exclude         = 'minutely,hourly,daily,alerts,flags';
@@ -57,17 +56,15 @@ function payloadProcessor (payload, done) {
     }
 
     var currentWeather = data.currently;
-    var fulcrumRecord = {
-      record: payload.data
-    };
 
     Object.keys(fulcrumWeatherFields).forEach(function (metric) {
       if (currentWeather[metric]) {
-        fulcrumRecord.record.form_values[fulcrumWeatherFields[metric].key] = currentWeather[metric].toString();
+        record.updateFieldByDataName(fulcrumWeatherFields[metric], currentWeather[metric].toString());
+        //fulcrumRecord.record.form_values[fulcrumWeatherFields[metric].key] = currentWeather[metric].toString();
       }
     });
 
-    fulcrum.records.update(fulcrumRecord.record.id, fulcrumRecord, function (error, updatedRecord) {
+    fulcrum.records.update(record.get('id'), record.toJSON(), function (error, resp) {
       if (error) {
         return done(error);
       }

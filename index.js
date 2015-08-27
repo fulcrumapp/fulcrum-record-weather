@@ -67,8 +67,6 @@ function payloadProcessor (payload, done) {
       }
     });
 
-    console.log('Updating with: ', JSON.stringify(fulcrumRecord))
-
     fulcrum.records.update(fulcrumRecord.record.id, fulcrumRecord, function (error, updatedRecord) {
       if (error) {
         return done(error);

@@ -27,7 +27,7 @@ fulcrum.forms.find(formId, function (error, response) {
   var form = new models.Form(response.form);
 
   Object.keys(fulcrumWeatherFields).forEach(function (metricKey) {
-    var dataName = fulcrumWeatherFields[metricKey];
+    var dataName = fulcrumWeatherFields[metricKey].dataName;
     var key = form.keyForDataName(dataName);
     fulcrumWeatherFields[metricKey].key = key;
   });

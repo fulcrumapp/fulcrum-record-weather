@@ -33,10 +33,6 @@ fulcrum.forms.find(formId, function (error, response) {
   });
 });
 
-function getWeatherFormKeys () {
-
-}
-
 function payloadProcessor (payload, done) {
   if (payload.data.form_id !== formId) {
     return done();
@@ -67,7 +63,7 @@ function payloadProcessor (payload, done) {
 
     Object.keys(fulcrumWeatherFields).forEach(function (metric) {
       if (currentWeather[metric]) {
-        fulcrumRecord.record.form_values[fulcrumWeatherFieldKeys[metric].key] = currentWeather[metric].toString();
+        fulcrumRecord.record.form_values[fulcrumWeatherFields[metric].key] = currentWeather[metric].toString();
       }
     });
 

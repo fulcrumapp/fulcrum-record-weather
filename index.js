@@ -83,6 +83,10 @@ var fulcrumConfig = {
 
 app.use('/fulcrum', fulcrumMiddleware(fulcrumConfig));
 
+app.get('/', function (req, resp) {
+  resp.send('fulcrum-record-weather is up and running!');
+});
+
 var port = (process.env.PORT || 5000);
 app.listen(port, function () {
   console.log('Listening on port ' + port);
